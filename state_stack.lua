@@ -18,9 +18,8 @@ end
 
 function StateStack:Pop()
     
-    local top = self.states[#self.states]
+    local top = table.remove(self.states)
     top:Exit()
-    table.remove(self.states)
 
     if #self.states < 1 then return end
     self.states[#self.states]:Enter()

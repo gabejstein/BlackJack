@@ -3,7 +3,6 @@ PlayState.__index = PlayState
 
 local player = Player:New(15,175)
 local dealer = Player:New(15,5)
-local players = {}
 
 local deckX, deckY = 268,5
 
@@ -13,6 +12,7 @@ local textBox = Textbox:New(10,100,300,50)
 
 local roundCount = 0 --for keeping track of when the cards should be shuffled.
 local roundFinished = false
+local gameOver = false
 
 function PlayState:New()
     local this = {
@@ -25,14 +25,10 @@ end
 
 function PlayState:Enter()
 
-    players = {}
     self.deck = Deck:New()
 
     player = Player:New(15,175)
     dealer = Player:New(15,5,true)
-
-    table.insert(players,dealer)
-    table.insert(players,player)
 
     --create states
     self.Betting = BettingState:New(player,dealer,self)
@@ -46,6 +42,8 @@ function PlayState:Enter()
     textBox.isActive = true
 
     self.fadeTween = Tween:New(1,0,0.5)
+
+    gameOver = false
 
     self:StartNewRound()
 end
@@ -85,27 +83,37 @@ end
 
 function PlayState:Update(dt)
 
+    self.fadeTween:Update(dt)
+
     self.subStack:Update(dt)
+
+    local playerScore = player:GetScore()
+    local dealerScore = dealer:GetScore()
+
+    --check for bust or blackjacks
+    if playerScore > 21 or dealerScore > 21 or (playerScore==21 and player:CardCount()==2) or
+    (dealerScore==21 and dealer:CardCount()==2) then
+        if not roundFinished then
+            self.subStack:Clear()
+        end
+    end
 
     if self.subStack:Empty() then
         if roundFinished then
-            self:StartNewRound()
+             if not gameOver then self:StartNewRound() end
         else
-            self:CheckHands()
+            self:CheckHands(playerScore,dealerScore)
         end
         
     end
 
-    if self.fadeTween:IsFinished() == false then
-        self.fadeTween:Update(dt)
-    end
+    
 
 end
 
 function PlayState:Render()
     love.graphics.clear(0,0.6,0,1)
 
-    
     player:DisplayHand()
     dealer:DisplayHand()
 
@@ -129,11 +137,6 @@ function PlayState:Render()
 
     self.subStack:Render()
 
-    --To test deck
-    --[[love.graphics.setColor(1,0,0,1)
-    local cardsLeft = string.format("Cards left: %d",self.deck:Count())
-    love.graphics.print(cardsLeft,0,0)]]
-
     --fade in/out
     love.graphics.setColor(0,0,0,self.fadeTween:Value())
     love.graphics.rectangle("fill",0,0,VIRTUAL_WIDTH,VIRTUAL_HEIGHT)
@@ -142,26 +145,23 @@ function PlayState:Render()
 end
 
 --We're going to check for winners/losers here
-function PlayState:CheckHands()
-    local playerScore = player:GetScore()
-    local dealerScore = dealer:GetScore()
+function PlayState:CheckHands(playerScore, dealerScore)
 
     dealer:RevealHand()
 
     if dealerScore == playerScore then
-        self:Message("THE GAME'S A PUSH!")
+        self:Message("The game's a push!")
         player.money = player.money + pot / 2
         dealer.money = dealer.money + pot / 2
-    --[[elseif dealerScore == 21 then
+    elseif dealerScore == 21 and dealer:CardCount()==2 then
         --dealer wins
-        textBox:SetText("21 for me! I win!")
+        self:Message("Black Jack for me! I win!")
         dealer.money = dealer.money + pot
-
-    elseif playerScore == 21 then
+    elseif playerScore == 21 and player:CardCount()==2 then
         --player wins
-        textBox:SetText("Black Jack! You win!")
-        player.money = player.money + pot]]
-    elseif playerScore > 21 then --should really check only after player's turn
+        self:Message("Black Jack! You win!")
+        player.money = player.money + pot
+    elseif playerScore > 21 then
         self:Message("YOU'RE BUSTED!")
         dealer.money = dealer.money + pot
     elseif dealerScore > 21 then
@@ -179,12 +179,12 @@ function PlayState:CheckHands()
     if player.money <= 0 then
         self:Message("You're out of money. You're done!", 
         function()
-            self.fadeTween = Tween:New(0,1,2,
+           self.fadeTween = Tween:New(0,1,3.5,
             function()
-                gStateMachine:ChangeState("gameover") 
+                gStateMachine:ChangeState("gameover")
             end)
         end)
-        
+        gameOver = true
     elseif dealer.money <= 0 then
         self:Message("I'm out of money! I'm finished for the day.")
       

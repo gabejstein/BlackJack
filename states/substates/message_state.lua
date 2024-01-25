@@ -28,12 +28,13 @@ function MessageState:Update(dt)
    self.timer = self.timer + dt
    if self.timer > self.waitTime then
         self.isDone = true
-        
+        self.onFinish()
+        self.onFinish = function() end
    end
 end
 
 function MessageState:Exit()
-    self.onFinish()
+    
 end
 
 function MessageState:Render()

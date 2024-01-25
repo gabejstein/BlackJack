@@ -17,6 +17,7 @@ function Textbox:New(x,y,w,h)
 end
 
 function Textbox:SetText(text)
+    text = string.upper(text)
     self.text = text
 end
 

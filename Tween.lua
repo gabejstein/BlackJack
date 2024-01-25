@@ -3,7 +3,7 @@
 Tween = {}
 Tween.__index = Tween
 
-function Tween:New(start, finish, duration,onFinish)
+function Tween:New(start, finish, duration, onFinish)
     local this = {
         start = start,
         finish = finish,
@@ -30,7 +30,7 @@ function Tween:Update(dt)
     self.time = self.time + dt
     self.current = self.start + (self.distance * (self.time / self.duration))
 
-    if self.time > self.duration then
+    if self.time >= self.duration then
         self.current = self.start + self.distance
         self.isFinished = true
         self.OnFinish()
@@ -39,6 +39,10 @@ end
 
 function Tween:IsFinished()
     return self.isFinished
+end
+
+function Tween:Toggle()
+    self.isFinished = not self.isFinished
 end
 
 function Tween:Value()

@@ -57,6 +57,10 @@ function Player:GetScore()
     return score
 end
 
+function Player:CardCount()
+    return #self.hand
+end
+
 function Player:DisplayHand()
     local x, y = 0,0
     for i=1,#self.hand do
