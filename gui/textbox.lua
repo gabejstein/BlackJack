@@ -9,7 +9,10 @@ function Textbox:New(x,y,w,h)
         h = h,
         padding = 10,
         isActive = false,
-        text = ""
+        text = "",
+        curChar = 1,
+        lineSize = 0,
+        isDone = false,
     }
     setmetatable(this,self)
 
@@ -19,6 +22,24 @@ end
 function Textbox:SetText(text)
     text = string.upper(text)
     self.text = text
+    self.curChar = 1
+    self.lineSize = string.len(text)
+    self.isDone = false
+end
+
+function Textbox:Update(dt)
+    if not self.isDone then
+        self.curChar = math.min(self.curChar + dt*20, self.lineSize)
+        if self.curChar == self.lineSize then
+            self.isDone = true
+        end
+
+        if love.keyboard.wasPressed("return") or love.mouse.wasPressed(1) then
+            self.isDone = true
+            self.curChar = self.lineSize
+        end
+    end
+    
 end
 
 function Textbox:Render()
@@ -29,5 +50,6 @@ function Textbox:Render()
     local tx = self.x + self.padding
     local ty = self.y + self.padding
 
-    love.graphics.print(self.text,tx,ty)
+    local renderText = string.sub(self.text,1,self.curChar)
+    love.graphics.print(renderText,tx,ty)
 end

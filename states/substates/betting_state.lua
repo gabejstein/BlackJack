@@ -9,7 +9,7 @@ function BettingState:New(player, dealer,playState)
         dealer = dealer,
         isDone = false,
         playState = playState,
-        
+        bet = 0,
     }
     setmetatable(this,self)
 
@@ -32,6 +32,7 @@ end
 function BettingState:Enter()
     self.isDone = false
     self.bet = 0
+    
 end
 
 function BettingState:Exit()

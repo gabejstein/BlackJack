@@ -29,7 +29,6 @@ end
 function DealState:Exit()
     self.player:GetCard(self.deck:GetTop())
     gSounds["cardPlace"]:play()
-    
 end
 
 function DealState:Update(dt)

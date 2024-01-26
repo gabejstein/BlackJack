@@ -31,14 +31,15 @@ function PlayState:Enter()
     dealer = Player:New(15,5,true)
 
     --create states
+    --In hindsight, I might just allocate these things during the game.
+    --Having these proallocated states creates some problems.
     self.Betting = BettingState:New(player,dealer,self)
     self.DealToPlayer = DealState:New(player,self.deck,deckX,deckY)
     self.DealToDealer = DealState:New(dealer,self.deck,deckX,deckY)
     self.PlayerMove = PlayerMoveState:New(player,self.subStack,self.DealToPlayer)
     self.DealerMove = DealerMoveState:New(dealer,self.subStack,self.DealToDealer,player)
     self.MessageState = MessageState:New(textBox)
-
-    textBox:SetText("WHAT WILL YOU DO?")
+    
     textBox.isActive = true
 
     self.fadeTween = Tween:New(1,0,0.5)
@@ -61,7 +62,7 @@ function PlayState:StartNewRound()
     self.subStack:Push(self.DealToDealer)
     self.subStack:Push(self.DealToPlayer)
     self.subStack:Push(self.Betting)
-    textBox:SetText("PLACE YOUR BET") --note: the textboxes are currently only able to take 1 string at a time
+    self:Message("PLACE YOUR BET")
 
     roundCount = roundCount + 1
     if roundCount > 5 then
@@ -74,8 +75,9 @@ function PlayState:StartNewRound()
         self.DealToDealer:UpdateDeck(self.deck)
 
         gSounds["shuffle"]:play()
-        self:Message("Shuffling deck.")
+        self:Message("Shuffling deck.", function() self:Message("PLACE YOUR BET") end)
     end
+
 end
 
 function PlayState:Exit()
@@ -106,8 +108,6 @@ function PlayState:Update(dt)
         end
         
     end
-
-    
 
 end
 

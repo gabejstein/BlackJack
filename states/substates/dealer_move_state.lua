@@ -25,8 +25,10 @@ function DealerMoveState:Update(dt)
    --take a chance if the player is ahead, otherwise play it safe.
    if score < 17 and playerScore > score and playerScore < 22 then
         self.stack:Push(self.dealToDealerState)
+        
    elseif score < 15 then
         self.stack:Push(self.dealToDealerState)
+        
    else
         self.isDone = true
    end

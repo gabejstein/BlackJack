@@ -21,6 +21,9 @@ function StateStack:Pop()
     local top = table.remove(self.states)
     top:Exit()
 
+    --I know this is a bad practice.
+    --A possible solution might have been to separate Enter into two functions:
+    --ex) OnPush, OnPop
     if #self.states < 1 then return end
     self.states[#self.states]:Enter()
 end
