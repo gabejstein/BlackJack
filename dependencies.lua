@@ -15,6 +15,7 @@ require "state_stack"
 require "states.start_menu"
 require "states.play_state"
 require "states.gameover_state"
+require "states.ending_state"
 
 --substates
 require "states.substates.deal_state"

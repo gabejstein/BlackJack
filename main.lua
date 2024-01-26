@@ -23,6 +23,7 @@ function love.load()
         ["start"] = StartMenu:New(),
         ["play"] = PlayState:New(),
         ["gameover"] = GameOverState:New(),
+        ["ending"] = EndingState:New(),
     })
 
     gStateMachine:ChangeState("start")

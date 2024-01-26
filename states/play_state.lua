@@ -29,6 +29,7 @@ function PlayState:Enter()
 
     player = Player:New(15,175)
     dealer = Player:New(15,5,true)
+    --dealer.money = 10 --for testing
 
     --create states
     --In hindsight, I might just allocate these things during the game.
@@ -186,8 +187,14 @@ function PlayState:CheckHands(playerScore, dealerScore)
         end)
         gameOver = true
     elseif dealer.money <= 0 then
-        self:Message("I'm out of money! I'm finished for the day.")
-      
+        self:Message("I'm out of money! You beat me!", 
+        function()
+           self.fadeTween = Tween:New(0,1,3.5,
+            function()
+                gStateMachine:ChangeState("ending")
+            end)
+        end)
+       gameOver = true
     end
 
     roundFinished = true

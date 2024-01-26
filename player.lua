@@ -4,7 +4,7 @@ Player.__index = Player
 function Player:New(x,y,isDealer)
     local this = {
         hand = {},
-        money = 100,
+        money = 500,
         x = x or 0,
         y = y or 0,
         isDealer = isDealer or false,
