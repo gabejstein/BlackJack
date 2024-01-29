@@ -29,7 +29,7 @@ function PlayState:Enter()
 
     player = Player:New(15,175)
     dealer = Player:New(15,5,true)
-    --dealer.money = 10 --for testing
+    roundCount = 0
 
     --create states
     --In hindsight, I might just allocate these things during the game.

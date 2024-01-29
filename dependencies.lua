@@ -5,6 +5,7 @@ require "assets"
 require "Tween"
 
 require "gui.button"
+require "gui.panel"
 require "gui.textbox"
 require "deck"
 require "player"

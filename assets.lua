@@ -1,6 +1,8 @@
 gTextures = {
     ["cards"] = love.graphics.newImage("assets/cardsLarge_tilemap_packed.png"),
     ["logo"] = love.graphics.newImage("assets/logo_01.png"),
+    ["cursor"] = love.graphics.newImage("assets/cursor.png"),
+    ["panel"] = love.graphics.newImage("assets/panel.png"),
 }
 
 gQuads = {

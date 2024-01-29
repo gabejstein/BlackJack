@@ -13,6 +13,7 @@ function Textbox:New(x,y,w,h)
         curChar = 1,
         lineSize = 0,
         isDone = false,
+        panel = Panel:New(gTextures["panel"],10)
     }
     setmetatable(this,self)
 
@@ -43,11 +44,9 @@ function Textbox:Update(dt)
 end
 
 function Textbox:Render()
-    love.graphics.setColor(0,0,0,0.4)
-    love.graphics.rectangle("fill",self.x,self.y,self.w,self.h,4,4,6)
-    love.graphics.setColor(1,1,1,1)
+    self.panel:Render(self.x,self.y,self.x+self.w,self.y+self.h)
 
-    local tx = self.x + self.padding
+    local tx = self.x + self.padding + 2 --the left side of the panel is actually offset by 1 pixel
     local ty = self.y + self.padding
 
     local renderText = string.sub(self.text,1,self.curChar)

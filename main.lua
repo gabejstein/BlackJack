@@ -31,6 +31,16 @@ function love.load()
     --user defined on-keyboard-press table
     love.keyboard.keysPressed = {}
 
+    love.mouse.setVisible(false)
+
+end
+
+local function DrawCursor()
+    local x,y = Push:toGame(love.mouse.getPosition())
+    if x==nil or y==nil then return end
+    x = math.floor(x)
+    y = math.floor(y)
+    love.graphics.draw(gTextures["cursor"],x,y)
 end
 
 function love.update(dt)
@@ -46,6 +56,8 @@ function love.draw()
     Push:start()
     
         gStateMachine:Render()
+
+        DrawCursor()
     
     Push:finish()
 end
@@ -76,10 +88,6 @@ function love.mouse.wasReleased(key)
 end
 
 function love.keyboard.wasPressed(key)
-    if love.keyboard.keysPressed[key] then
-        return true
-    else
-        return false
-    end
+    return love.keyboard.keysPressed[key]
 end
 

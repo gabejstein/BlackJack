@@ -8,6 +8,7 @@ function Player:New(x,y,isDealer)
         x = x or 0,
         y = y or 0,
         isDealer = isDealer or false,
+        isRevealed = not isDealer
     }
     setmetatable(this,self)
 
@@ -15,7 +16,10 @@ function Player:New(x,y,isDealer)
 end
 
 function Player:GetCard(card)
-    if #self.hand == 0 and self.isDealer then card.faceDown = true end
+    if #self.hand == 0 and self.isDealer then 
+        card.faceDown = true 
+        self.isRevealed = false
+    end
     table.insert(self.hand,card)
 end
 
@@ -23,6 +27,7 @@ function Player:RevealHand()
     for i=1,#self.hand do
         self.hand[i].faceDown = false
     end
+    self.isRevealed = true
 end
 
 function Player:ResetHand()
@@ -69,10 +74,12 @@ function Player:DisplayHand()
         DisplayCard(self.hand[i],x,y)
     end
 
-    --Remove below later
-    love.graphics.setColor(0,0,1,1)
-    love.graphics.print(tostring(self:GetScore()),x+47,self.y)
-    love.graphics.setColor(1,1,1,1)
+    if self.isRevealed and #self.hand > 0 then
+        love.graphics.setColor(0,0,1,1)
+        love.graphics.print(tostring(self:GetScore()),x+47,self.y)
+        love.graphics.setColor(1,1,1,1)
+    end
+    
 end
 
 function Player:GetLastCardPosition()
