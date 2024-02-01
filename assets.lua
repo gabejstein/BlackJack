@@ -3,6 +3,7 @@ gTextures = {
     ["logo"] = love.graphics.newImage("assets/logo_01.png"),
     ["cursor"] = love.graphics.newImage("assets/cursor.png"),
     ["panel"] = love.graphics.newImage("assets/panel.png"),
+    ["panel_02"] = love.graphics.newImage("assets/panel_02.png"),
 }
 
 gQuads = {
@@ -19,5 +20,6 @@ gSounds = {
     ["shuffle"] = love.audio.newSource("assets/sounds/kenny/cardFan1.ogg","static"),
     ["gameOver"] = love.audio.newSource("assets/sounds/kenny/game_over.ogg","static"),
     ["pressEnter"] = love.audio.newSource("assets/sounds/kenny/powerUp8.ogg","static"),
+    ["chips"] = love.audio.newSource("assets/sounds/kenny/chipsCollide2.ogg","static")
 }
 

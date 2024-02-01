@@ -1,0 +1,10 @@
+Assets by Kenney (https://kenney.nl):
+cardsLarge_tilemap_packed.png
+cardFan1.ogg
+cardPlace1.ogg
+chipsCollide2.ogg
+game_over.ogg
+powerUp8.ogg
+powerUp9.ogg
+
+pixela-extreme.ttf font created by "kyle27"

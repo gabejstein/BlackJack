@@ -6,8 +6,9 @@ require "dependencies"
 function love.load()
     love.graphics.setDefaultFilter("nearest","nearest")
     love.window.setTitle("Black Jack")
+    local desktopWidth,desktopHeight = love.window.getDesktopDimensions()
     --Use the push library to create a render texture for screen
-    Push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
+    Push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, desktopWidth, desktopHeight, {
         vsync = true,
         fullscreen = false,
         resizable = true,

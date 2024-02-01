@@ -3,6 +3,8 @@ BettingState.__index = BettingState
 
 local bettingIncrement = 10
 
+local chipSound = gSounds["chips"]
+
 function BettingState:New(player, dealer,playState)
     local this ={
         player = player,
@@ -19,9 +21,12 @@ function BettingState:New(player, dealer,playState)
     this.bettingMenu = {
         x = mx,
         y = my,
-        upButton  = Button:New(mx,my,50,20,"UP",function() this:OnUpButton() end,nil),
-        downButton  = Button:New(mx,my+20,50,20,"DOWN",function() this:OnDownButton() end,nil),
-        okButton = Button:New(mx,my+40,50,20,"OK",function() this:OnOkButton() end,nil),
+        --upButton  = Button:New(mx,my,50,20,"UP",function() this:OnUpButton() end,nil),
+        --downButton  = Button:New(mx,my+20,50,20,"DOWN",function() this:OnDownButton() end,nil),
+        --okButton = Button:New(mx,my+40,50,20,"OK",function() this:OnOkButton() end,nil),
+        upButton  = Button:New(200,100,60,25,"UP",function() this:OnUpButton() end,nil),
+        downButton  = Button:New(200,125,60,25,"DOWN",function() this:OnDownButton() end,nil),
+        okButton = Button:New(260,100,50,50,"OK",function() this:OnOkButton() end,nil),
     }
 
     this.messageState = MessageState:New("You have to bet more than 0!")
@@ -61,7 +66,7 @@ end
 
 function BettingState:OnOkButton()
     if self.bet <= 0 then
-        self.playState:Message("YOU NEED TO BET MORE THAN THAT!", function()self.playState:Message("PLACE YOUR BET")end)
+        self.playState:Message("YOU NEED TO BET MORE THAN THAT!", function()self.playState:Message("PLACE YOUR BET.")end)
         return
     end
     
@@ -78,6 +83,7 @@ function BettingState:OnDownButton()
     self.bet = self.bet - bettingIncrement
     self.player.money = self.player.money + bettingIncrement
     SetPot(self.bet)
+    chipSound:play()
 end
 
 function BettingState:OnUpButton()
@@ -85,4 +91,5 @@ function BettingState:OnUpButton()
     self.player.money = self.player.money - bettingIncrement
     self.bet = self.bet + bettingIncrement
     SetPot(self.bet)
+    chipSound:play()
 end

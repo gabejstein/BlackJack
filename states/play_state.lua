@@ -63,7 +63,7 @@ function PlayState:StartNewRound()
     self.subStack:Push(self.DealToDealer)
     self.subStack:Push(self.DealToPlayer)
     self.subStack:Push(self.Betting)
-    self:Message("PLACE YOUR BET")
+    self:Message("PLACE YOUR BET.")
 
     roundCount = roundCount + 1
     if roundCount > 5 then
@@ -76,7 +76,7 @@ function PlayState:StartNewRound()
         self.DealToDealer:UpdateDeck(self.deck)
 
         gSounds["shuffle"]:play()
-        self:Message("Shuffling deck.", function() self:Message("PLACE YOUR BET") end)
+        self:Message("Shuffling deck.", function() self:Message("PLACE YOUR BET.") end)
     end
 
 end
